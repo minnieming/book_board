@@ -10,4 +10,4 @@ public class SpringWeek2Application { // timestamped 사용시 꼭 필요함!!
         SpringApplication.run(SpringWeek2Application.class, args);
     }
 
-}
+}//
