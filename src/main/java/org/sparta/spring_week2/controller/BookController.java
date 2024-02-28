@@ -44,16 +44,16 @@ public class BookController {
 
 
     // 선택한 도서 대출 기능
-    @PostMapping ("/rental/{bookId}")
-    public String getLoanBook (@PathVariable Long bookId, Long memberId, @RequestBody MemberRequestDto memberRequestDto) {
-        return bookService.getLoanBook(bookId, memberId, memberRequestDto);
+    @PostMapping ("/rental/{bookId}/{memberId}")
+    public String getLoanBook (@PathVariable Long bookId, Long memberId) {
+        return bookService.getLoanBook(bookId, memberId);
     }
 
-    // 선택한 도서 반납 기능
-    @PutMapping ("/rental/{rentalId}/return")
-    public Long getReturnBook (@PathVariable Long rentalId, @RequestBody RentalRequestDto rentalRequestDto) {
-        return bookService.getReturnBook(rentalId, rentalRequestDto);
-    }
+//    // 선택한 도서 반납 기능
+//    @PutMapping ("/rental/{rentalId}/return")
+//    public Long getReturnBook (@PathVariable Long rentalId, @RequestBody RentalRequestDto rentalRequestDto) {
+//        return bookService.getReturnBook(rentalId, rentalRequestDto);
+//    }
 
 
     // 대출 내역 조회 기능

@@ -3,6 +3,7 @@ package org.sparta.spring_week2.dto;
 import lombok.Getter;
 import org.sparta.spring_week2.entity.Rental;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

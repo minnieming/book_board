@@ -27,12 +27,12 @@ public class Rental extends Timestamped {
 //    private Book book; // Book 엔터티 클래스와의 관계를 매핑
 
     // 반납일
-    @Column(name = "returedDate", nullable = false)
-    private String returnedDate;
+    @Column(name = "returnedDate", nullable = false)
+    private LocalDateTime returnedDate;
 
     // 대출일
     @Column(name = "dueDate", nullable = false)
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     // 반납 상태
     @Column(name = "is_returned", nullable = false)
@@ -45,11 +45,6 @@ public class Rental extends Timestamped {
         this.is_returned = is_returned;
     }
 
-
-    public Rental(Long memberId, Long bookId) {
-        this.memberId = memberId;
-        this.bookId = bookId;
-    }
 
     // ??? @ManyToOne 사용하지 않으려면, 필드와 인스턴스화를 직접 작성해야하나요?
     public void setMemberId(Long memberId) {
@@ -64,6 +59,11 @@ public class Rental extends Timestamped {
         this.bookId = bookId;
     }
 
+//    public void setDueDate(LocalDate dueDate) {
+//        this.dueDate = dueDate;
+//    }
+
+
 
 //    // Book 객체 생성
 //    Book book = new Book();
@@ -75,5 +75,4 @@ public class Rental extends Timestamped {
     public void setReturnStatus(boolean is_returned) {
         this.is_returned = is_returned;
     }
-
 }

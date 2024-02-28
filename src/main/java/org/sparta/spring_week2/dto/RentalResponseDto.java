@@ -13,8 +13,8 @@ public class RentalResponseDto {
     // Rental
     private Long rentalId;
     private String is_return;
-    private String returedDate;
-    private Date dueDate;
+    private LocalDateTime returnedDate;
+    private LocalDate dueDate;
     private LocalDateTime createdAt;
 
     public RentalResponseDto(Rental rental) {
