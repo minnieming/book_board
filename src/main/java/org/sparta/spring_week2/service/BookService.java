@@ -10,6 +10,8 @@ import org.sparta.spring_week2.repository.MemberRepository;
 import org.sparta.spring_week2.repository.RentalRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -75,9 +77,8 @@ public class BookService {
         return memberResponseDto;
     }
 
-
-    @Transactional // 영속성 트랜젝션 사용 가능 / 변경 감지 가능
     // 선택한 도서 대출 기능
+    @Transactional // 영속성 트랜젝션 사용 가능 / 변경 감지 가능
     public String getLoanBook(Long bookId, Long memberId) {
 
 //       Member member = new Member(memberRequestDto);
@@ -117,39 +118,73 @@ public class BookService {
         return "성공적으로 대출이 되었습니다.";
     }
 
-// 보류한 코드
-//    @Transactional
-//    // 선택한 도서 반납 기능 : 도서 반납 → 기록 삭제
-//    public Long getReturnBook(Long rentalId) {
-//
-//        // 해당 rentalId가 DB에 존재하는지 확인
-//        Optional<Rental> returnBook = rentalRepository.findById(rentalId); // ? RentalRepository에 추가 시킨거 맞는건가?
-//
-//        Rental rental = new Rental();
-//
-//        // 빌린 기록 변경하기
-//        if (returnBook.isPresent()) { // 확인한 rentalId 값이 있다면
-//            rental.putIs_returned(true);
-//            rental.setReturnedDate(LocalDateTime.now());
-//
-//            rentalRepository.save(rental);
-//
-//        } else { // 확인한 rentalId 값이 없다면
-//            throw new IllegalArgumentException("해당 대출이 존재하지 않습니다");
-//        }
-//
-//        return rentalId; // ? 이걸 리턴시키는게 맞나
-//    }
+    // 선택한 도서 반납 기능
+    @Transactional
+    public Long getReturnBook (Long rentalId) {
+
+        Rental rental = rentalRepository.findById(rentalId).orElseThrow(() ->
+                new IllegalArgumentException("선택한 책은 존재하지 않습니다.")
+        );
+
+        rental.update();
+
+        return rentalId; // ? 이걸 리턴시키는게 맞나
+    }
+// findAllByOrderByCreatedAtAsc()
+//    // DB 조회
+//        return bookRepository.findAllByOrderByCreatedAtAsc()
+//                .stream()
+//                .map(BookResponseDto::new).toList();
+//}
+
+    @Transactional
+    // 1명의 대출내역 조회 memberId
+    // memberId가 빌린 bookId들 가져오기 -> QueryMethod / NativeQuery => Repository
+    // SELECT * FROM member where memberId = 1;
+
+    // memberId -> 1 QueryMethod
+    // bookId -> 1, 2, 3
+    // bookId -> Book book을 3개 만들기!
+    // RentalSearchResponseDto(Memeber, Book)
+    // @Query(value = "xxxxxxxxxxxxx", nativeQuery = true)
+
+    public List<RentalSearchResponseDto> getReturnRental(Long memberId) {
+
+//        Rental rental = findRental(rentalId);
+        // findBookIdsByMemberId
 
 
-    // DTO 새롭게 연결하려는 코드
-//    @Transactional
+        List<RentalSearchResponseDto> list = new ArrayList<>(); // memberId = 1
+
+        List<Long> longList = findBookIdsByMemberId(memberId);  // 1, 2, 3
+
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new IllegalArgumentException("선택한 회원은 존재하지 않습니다.")
+        );
+
+        for (int i = 0; i < longList.size(); i++) {
+            Book book = bookRepository.findById(longList.get(i)).orElseThrow(() ->
+                    new IllegalArgumentException("선택한 책은 존재하지 않습니다.")
+            );
+            RentalSearchResponseDto responseDto = new RentalSearchResponseDto(member, book);
+            list.add(responseDto);
+        }
+
+        return list;
+    }
+
+//    - [ ]  대출 내역 조회 기능
+//    - 회원의 대출 내역 기록을 조회할 수 있습니다.
+//        - 대출 내역 기록에는 회원의 `이름`과 `전화번호`, 도서의 `제목`과 `저자`가 포함 되어있어야 합니다.
+//            - 조회된 대출 내역 기록은 `대출일` 기준 오름차순으로 정렬 되어있습니다.
+
+
+
+
     // 대출 내역 조회 기능
 //    public List<RentalResponseDto> getReturnList(Long rentalId) {
-//
-//
-//
-//
+
 //
 // // 기존 코드 전체
 //        해당 rentalId를 가지는 대출 내역이 있는지 확인
@@ -212,4 +247,14 @@ public boolean hasBooks(Long memberId) {
     return false;
 }
 
+private Rental findRental(Long rentalId) {
+    return rentalRepository.findById(rentalId).orElseThrow(() ->
+            new IllegalArgumentException("선택한 책은 존재하지 않습니다.")
+    );
+}
+
+    // 회원이 대출한 책의 ID들을 조회하는 메서드
+    public List<Long> findBookIdsByMemberId(Long memberId) {
+        return rentalRepository.findBookIdsByMemberId(memberId);
+    }
 }

@@ -2,7 +2,9 @@ package org.sparta.spring_week2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+@EnableJpaAuditing
 @SpringBootApplication
 public class SpringWeek2Application { // timestamped 사용시 꼭 필요함!!
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.sparta.spring_week2.entity.Rental;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -18,8 +19,9 @@ public class RentalResponseDto {
     private LocalDateTime createdAt;
 
     public RentalResponseDto(Rental rental) {
+        this.rentalId = getRentalId();
         this.is_return = getIs_return();
-        this.returedDate = getReturedDate();
+        this.returnedDate = getReturnedDate();
         this.dueDate = getDueDate();
         this.createdAt = getCreatedAt();
     }
