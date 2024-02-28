@@ -117,6 +117,7 @@ public class BookService {
         return "성공적으로 대출이 되었습니다.";
     }
 
+// 보류한 코드
 //    @Transactional
 //    // 선택한 도서 반납 기능 : 도서 반납 → 기록 삭제
 //    public Long getReturnBook(Long rentalId) {
@@ -140,12 +141,18 @@ public class BookService {
 //        return rentalId; // ? 이걸 리턴시키는게 맞나
 //    }
 
+
+    // DTO 새롭게 연결하려는 코드
 //    @Transactional
     // 대출 내역 조회 기능
-
-
 //    public List<RentalResponseDto> getReturnList(Long rentalId) {
-//        // 해당 rentalId를 가지는 대출 내역이 있는지 확인
+//
+//
+//
+//
+//
+// // 기존 코드 전체
+//        해당 rentalId를 가지는 대출 내역이 있는지 확인
 //        Optional<Rental> optionalRental = rentalRepository.findById(rentalId);
 //
 //        if (optionalRental.isEmpty()) {  // isPresent : 값이 존재하는지! ! 대출 내역이 존재하면
@@ -159,15 +166,15 @@ public class BookService {
 //                .map(rentalEntity -> new RentalResponseDto(rentalEntity))
 //                .collect(Collectors.toList());
 //    }
-
+// DTO 추가한거 연결하는 코드
 //        List<RentalSearchResponseDto> rentalSearchResponseDtos = new ArrayList<>();
 //        return RentalSearchResponseDtos;
-
+// 기존 코드
 //        return rentalRepository.findAllByOrderByDueDateAsc()
 //                .stream()
 //                .map(rentalEntity -> new RentalResponseDto(rentalEntity))
 //                .toList();
-}
+//}
 
 
 
